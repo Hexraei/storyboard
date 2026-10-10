@@ -90,9 +90,9 @@ Rules:
 // Step 3: build the full image prompt for a panel.
 export function fullPrompt(panelPrompt: string, characters: Character[], styleSuffix: string): string {
   const cast = characters.map((c) => `${c.name}: ${c.description}`).join('; ');
-  const parts = [panelPrompt];
+  const parts = [styleSuffix, panelPrompt];
   if (cast) parts.push(`Characters - ${cast}`);
-  parts.push(styleSuffix, 'single comic panel, no text, no speech bubbles, no watermark');
+  parts.push('single comic panel, no text, no speech bubbles, no watermark');
   return parts.join(', ');
 }
 
