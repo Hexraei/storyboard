@@ -38,7 +38,7 @@ function drawCoverImage(
   const sw = w / scale;
   const sh = h / scale;
   const sx = (img.naturalWidth - sw) / 2;
-  const sy = (img.naturalHeight - sh) / 2;
+  const sy = 0; // top-anchor: bottom strip of the source (provider watermark) stays out of the export
   ctx.save();
   ctx.beginPath();
   ctx.rect(x, y, w, h);
