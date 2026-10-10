@@ -143,7 +143,7 @@ async function generateAll() {
   for (let i = 0; i < state.panels.length; i++) {
     await generatePanel(i);
     renderStripActions();
-    await new Promise((r) => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 8000));
   }
 }
 
@@ -153,18 +153,20 @@ async function generatePanel(i: number) {
   const prompt = fullPrompt(p.prompt, state.analysis!.characters, styleSuffix);
   p.status = 'loading';
   updatePanelView(i);
-  for (let attempt = 0; attempt < 4; attempt++) {
+  // The free image tier rate-limits bursts; alternate models and back off hard.
+  for (let attempt = 0; attempt < 6; attempt++) {
     try {
-      const url = imageUrl(prompt, p.seed + attempt * 1000);
+      const model = attempt % 2 === 0 ? 'flux' : 'turbo';
+      const url = imageUrl(prompt, p.seed + attempt * 1000, 960, 720, model);
       await loadPanelImage(url);
       p.imageUrl = url;
       p.status = 'done';
       updatePanelView(i);
       return;
     } catch {
-      p.status = attempt === 3 ? 'error' : 'loading';
+      p.status = attempt === 5 ? 'error' : 'loading';
       updatePanelView(i);
-      await new Promise((r) => setTimeout(r, 3000 * (attempt + 1)));
+      await new Promise((r) => setTimeout(r, 10000 * Math.pow(2, Math.min(attempt, 2))));
     }
   }
 }
