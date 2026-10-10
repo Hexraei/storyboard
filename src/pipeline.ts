@@ -21,12 +21,12 @@ export interface StoryAnalysis {
 }
 
 export const STYLES: Record<string, string> = {
-  'Comic ink': 'comic book illustration, bold black ink outlines, flat vibrant cel colors, halftone dot shading, graphic novel art, stylized drawing, not photorealistic',
-  'Flat vector': 'flat vector illustration, minimal geometric shapes, bold color palette, 2D graphic design, stylized drawing, not photorealistic',
-  'Watercolor': 'watercolor illustration, soft edges, visible paper texture, gentle color washes, hand-painted storybook art, stylized drawing, not photorealistic',
-  'Pixel art': 'pixel art illustration, 16-bit retro game style, limited color palette, crisp pixels, stylized drawing, not photorealistic',
-  'Noir': 'black and white graphic novel illustration, film noir mood, dramatic shadows, high contrast ink wash, stylized drawing, not photorealistic',
-  '3D render': 'stylized 3D cartoon render, soft studio lighting, animated-film character design, stylized, not photorealistic',
+  'Comic ink': '2D comic book illustration, thick black ink outlines, flat cel-shaded colors, halftone dot shading, graphic novel panel art, hand-drawn cartoon style, 2D artwork only, no photorealism, no 3D render',
+  'Flat vector': 'flat 2D vector illustration, minimal geometric shapes, bold color palette, clean crisp edges, 2D graphic design only, no photorealism, no 3D render',
+  'Watercolor': '2D watercolor illustration, soft edges, visible paper texture, gentle color washes, hand-painted storybook art, 2D artwork only, no photorealism, no 3D render',
+  'Pixel art': '2D pixel art illustration, 16-bit retro game style, limited color palette, crisp visible pixels, 2D artwork only, no photorealism, no 3D render',
+  'Noir': '2D black and white graphic novel illustration, film noir mood, dramatic shadows, high contrast ink wash, hand-drawn, 2D artwork only, no photorealism, no 3D render',
+  '3D render': 'stylized 3D cartoon render, soft studio lighting, animated-film character design, toy-like proportions, not photorealistic',
 };
 
 const TEXT_API = 'https://text.pollinations.ai/openai';
