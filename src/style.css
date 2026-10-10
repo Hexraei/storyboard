@@ -149,7 +149,7 @@ select {
   flex-direction: column;
 }
 .panelbody { display: flex; flex-direction: column; height: 100%; }
-.panel img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.panel img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: top; display: block; }
 .placeholder {
   aspect-ratio: 4 / 3;
   display: flex;
