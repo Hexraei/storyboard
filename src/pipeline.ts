@@ -94,9 +94,9 @@ export function fullPrompt(panelPrompt: string, characters: Character[], styleSu
   return parts.join(', ');
 }
 
-export function imageUrl(prompt: string, seed: number, w = 960, h = 720): string {
+export function imageUrl(prompt: string, seed: number, w = 960, h = 720, model = 'flux'): string {
   const p = encodeURIComponent(prompt).slice(0, 1500);
-  return `https://image.pollinations.ai/prompt/${p}?width=${w}&height=${h}&seed=${seed}&nologo=true&model=flux`;
+  return `https://image.pollinations.ai/prompt/${p}?width=${w}&height=${h}&seed=${seed}&nologo=true&model=${model}`;
 }
 
 // Step 4: load one panel image (CORS-open, so canvas export stays clean).
