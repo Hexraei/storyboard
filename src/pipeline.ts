@@ -21,15 +21,17 @@ export interface StoryAnalysis {
 }
 
 export const STYLES: Record<string, string> = {
-  'Comic ink': 'bold comic book ink style, clean black outlines, flat vibrant colors, halftone shading',
-  'Flat vector': 'flat vector illustration, minimal geometric shapes, bold color palette',
-  'Watercolor': 'loose watercolor painting, soft edges, visible paper texture, gentle color washes',
-  'Pixel art': 'detailed pixel art, 16-bit retro game style, limited color palette',
-  'Noir': 'black and white film noir style, dramatic shadows, high contrast ink wash',
-  '3D render': 'stylized 3D render, soft studio lighting, pixar-like character design',
+  'Comic ink': 'comic book illustration, bold black ink outlines, flat vibrant cel colors, halftone dot shading, graphic novel art, stylized drawing, not photorealistic',
+  'Flat vector': 'flat vector illustration, minimal geometric shapes, bold color palette, 2D graphic design, stylized drawing, not photorealistic',
+  'Watercolor': 'watercolor illustration, soft edges, visible paper texture, gentle color washes, hand-painted storybook art, stylized drawing, not photorealistic',
+  'Pixel art': 'pixel art illustration, 16-bit retro game style, limited color palette, crisp pixels, stylized drawing, not photorealistic',
+  'Noir': 'black and white graphic novel illustration, film noir mood, dramatic shadows, high contrast ink wash, stylized drawing, not photorealistic',
+  '3D render': 'stylized 3D cartoon render, soft studio lighting, animated-film character design, stylized, not photorealistic',
 };
 
 const TEXT_API = 'https://text.pollinations.ai/openai';
+// Image-scoped secret key (free tier, generate-only, no paid balance on the account).
+const IMAGE_KEY = 'sk_ZHuIoEd6aIjD0Gq6CCluIHQVkM1DBe9D';
 
 async function llmJson<T>(system: string, user: string, retries = 4): Promise<T> {
   let lastErr: unknown = null;
@@ -96,7 +98,7 @@ export function fullPrompt(panelPrompt: string, characters: Character[], styleSu
 
 export function imageUrl(prompt: string, seed: number, w = 960, h = 720, model = 'flux'): string {
   const p = encodeURIComponent(prompt).slice(0, 1500);
-  return `https://image.pollinations.ai/prompt/${p}?width=${w}&height=${h}&seed=${seed}&nologo=true&model=${model}`;
+  return `https://image.pollinations.ai/prompt/${p}?width=${w}&height=${h}&seed=${seed}&nologo=true&model=${model}&key=${IMAGE_KEY}`;
 }
 
 // Step 4: load one panel image (CORS-open, so canvas export stays clean).
