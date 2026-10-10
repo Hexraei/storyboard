@@ -3,7 +3,7 @@ import {
   STYLES,
   analyzeStory,
   fullPrompt,
-  imageUrl,
+  generatePanelImage,
   loadPanelImage,
   type Character,
   type PanelSpec,
@@ -156,8 +156,7 @@ async function generatePanel(i: number) {
   // The free image tier rate-limits bursts; alternate models and back off hard.
   for (let attempt = 0; attempt < 6; attempt++) {
     try {
-      const model = 'flux'; // flux only: one model keeps character + style consistent across panels
-      const url = imageUrl(prompt, p.seed + attempt * 1000, 960, 768, model) // 48px taller; bottom strip (watermark) trimmed on draw;
+      const url = await generatePanelImage(prompt, p.seed + attempt * 1000, 960, 768);
       await loadPanelImage(url);
       p.imageUrl = url;
       p.status = 'done';
