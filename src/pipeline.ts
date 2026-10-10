@@ -31,7 +31,7 @@ export const STYLES: Record<string, string> = {
 
 const TEXT_API = 'https://text.pollinations.ai/openai';
 
-async function llmJson<T>(system: string, user: string, retries = 2): Promise<T> {
+async function llmJson<T>(system: string, user: string, retries = 4): Promise<T> {
   let lastErr: unknown = null;
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
@@ -56,7 +56,7 @@ async function llmJson<T>(system: string, user: string, retries = 2): Promise<T>
       return JSON.parse(content.slice(start, end + 1)) as T;
     } catch (e) {
       lastErr = e;
-      await new Promise((r) => setTimeout(r, 800 * (attempt + 1)));
+      await new Promise((r) => setTimeout(r, 2000 * Math.pow(2, attempt)));
     }
   }
   throw lastErr;
