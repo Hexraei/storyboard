@@ -29,7 +29,7 @@ export const STYLES: Record<string, string> = {
   '3D render': 'stylized 3D cartoon render, soft studio lighting, animated-film character design, toy-like proportions, not photorealistic',
 };
 
-const TEXT_API = 'https://text.pollinations.ai/openai';
+const TEXT_API = 'https://gen.pollinations.ai/v1/chat/completions';
 // Image-scoped secret key (free tier, generate-only, no paid balance on the account).
 const IMAGE_KEY = 'sk_ZHuIoEd6aIjD0Gq6CCluIHQVkM1DBe9D';
 
@@ -39,7 +39,7 @@ async function llmJson<T>(system: string, user: string, retries = 4): Promise<T>
     try {
       const res = await fetch(TEXT_API, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${IMAGE_KEY}` },
         body: JSON.stringify({
           model: 'openai',
           messages: [
