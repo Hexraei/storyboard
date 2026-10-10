@@ -96,9 +96,22 @@ export function fullPrompt(panelPrompt: string, characters: Character[], styleSu
   return parts.join(', ');
 }
 
-export function imageUrl(prompt: string, seed: number, w = 960, h = 720, model = 'flux'): string {
-  const p = encodeURIComponent(prompt).slice(0, 1500);
-  return `https://image.pollinations.ai/prompt/${p}?width=${w}&height=${h}&seed=${seed}&nologo=true&model=${model}&key=${IMAGE_KEY}`;
+const IMAGE_API = 'https://gen.pollinations.ai/v1/images/generations';
+// tongyi-mai/z-image-turbo: strong 2D style adherence, ~9s/panel, no baked watermark.
+const IMAGE_MODEL = 'zimage';
+
+// Step 3b: generate one panel image on the authenticated gateway; returns a data URL (CORS-clean for canvas export).
+export async function generatePanelImage(prompt: string, seed: number, w = 960, h = 768): Promise<string> {
+  const res = await fetch(IMAGE_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${IMAGE_KEY}` },
+    body: JSON.stringify({ model: IMAGE_MODEL, prompt: prompt.slice(0, 1500), size: `${w}x${h}`, seed, n: 1, response_format: 'b64_json' }),
+  });
+  if (!res.ok) throw new Error(`image API ${res.status}`);
+  const data = await res.json();
+  const b64: string | undefined = data.data?.[0]?.b64_json;
+  if (!b64) throw new Error('no image in response');
+  return `data:image/jpeg;base64,${b64}`;
 }
 
 // Step 4: load one panel image (CORS-open, so canvas export stays clean).
