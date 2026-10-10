@@ -156,7 +156,7 @@ async function generatePanel(i: number) {
   // The free image tier rate-limits bursts; alternate models and back off hard.
   for (let attempt = 0; attempt < 6; attempt++) {
     try {
-      const model = attempt % 2 === 0 ? 'flux' : 'turbo';
+      const model = attempt < 3 ? 'flux' : 'turbo'; // flux first for cross-panel consistency, turbo only as fallback
       const url = imageUrl(prompt, p.seed + attempt * 1000, 960, 720, model);
       await loadPanelImage(url);
       p.imageUrl = url;
