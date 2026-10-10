@@ -139,8 +139,12 @@ function step(n: string, title: string, body: string): HTMLElement {
 }
 
 async function generateAll() {
-  await Promise.all(state.panels.map((_, i) => generatePanel(i)));
-  renderStripActions();
+  // Serialized: the free image endpoint rate-limits concurrent anonymous requests.
+  for (let i = 0; i < state.panels.length; i++) {
+    await generatePanel(i);
+    renderStripActions();
+    await new Promise((r) => setTimeout(r, 800));
+  }
 }
 
 async function generatePanel(i: number) {
@@ -149,7 +153,7 @@ async function generatePanel(i: number) {
   const prompt = fullPrompt(p.prompt, state.analysis!.characters, styleSuffix);
   p.status = 'loading';
   updatePanelView(i);
-  for (let attempt = 0; attempt < 3; attempt++) {
+  for (let attempt = 0; attempt < 4; attempt++) {
     try {
       const url = imageUrl(prompt, p.seed + attempt * 1000);
       await loadPanelImage(url);
@@ -158,9 +162,9 @@ async function generatePanel(i: number) {
       updatePanelView(i);
       return;
     } catch {
-      p.status = attempt === 2 ? 'error' : 'loading';
+      p.status = attempt === 3 ? 'error' : 'loading';
       updatePanelView(i);
-      await new Promise((r) => setTimeout(r, 1500));
+      await new Promise((r) => setTimeout(r, 3000 * (attempt + 1)));
     }
   }
 }
