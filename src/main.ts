@@ -97,7 +97,7 @@ function renderComposer() {
     state.running = true;
     state.style = styleSel.value;
     go.setAttribute('disabled', 'true');
-    status.textContent = 'Reading your story, designing characters...';
+    status.textContent = 'Reading your story, designing characters... (about 10 seconds)';
     try {
       const analysis = await analyzeStory(story, Number(countSel.value));
       const stripSeed = Math.floor(Math.random() * 1_000_000);
@@ -130,6 +130,13 @@ function renderComposer() {
     step('4', 'Strip out', 'Export a real comic page as a PNG and share it anywhere.'),
   );
   app.append(how);
+  app.append(footer());
+}
+
+function footer(): HTMLElement {
+  const f = el('footer', 'sitefoot');
+  f.textContent = 'Built at Banana Hacks 2026 with AI assistance - story editing and every panel image are AI-generated (Pollinations free tier).';
+  return f;
 }
 
 function step(n: string, title: string, body: string): HTMLElement {
@@ -201,6 +208,7 @@ function renderStrip() {
   actions.id = 'strip-actions';
 
   app.append(top, grid, actions);
+  app.append(footer());
   renderStripActions();
 }
 
@@ -245,6 +253,7 @@ function renderStripActions() {
   const ready = state.panels.filter((p) => p.status === 'done').length;
   const total = state.panels.length;
   const info = el('span', 'progress', `${ready}/${total} panels drawn`);
+  if (ready < total) info.textContent += ' - panels draw one by one, about 10-20s each';
   const dl = el('button', 'go', 'Download comic (PNG)');
   if (ready < total) dl.setAttribute('disabled', 'true');
   dl.addEventListener('click', async () => {
