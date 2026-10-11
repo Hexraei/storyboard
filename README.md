@@ -38,9 +38,9 @@ story text
   -> PNG export
 ```
 
-- Frontend: TypeScript + Vite, zero build-time secrets, fully static.
-- LLM step and image generation run through free, key-less inference endpoints,
-  so anyone can try the demo without an account.
+- Frontend: TypeScript + Vite, fully static, hosted on GitHub Pages.
+- The LLM step and image generation run through the Pollinations generation
+  gateway (`gen.pollinations.ai`) on its free tier.
 - The whole pipeline runs in the browser; nothing is stored server-side.
 
 ## Run it locally
@@ -51,6 +51,23 @@ npm run dev
 ```
 
 `docs/index.html` is the self-contained production build served by GitHub Pages.
+
+## Build notes and deviations (Banana Hacks transparency log)
+
+- **API key in the frontend bundle.** The Pollinations secret key is embedded in
+  the client so judges and Devpost viewers can run the demo without any setup.
+  Blast radius is deliberately small: the key is generate-only, scoped to
+  image+text models, on the free tier, and the account has no payment method
+  attached. **The key will be rotated/deleted after judging closes.**
+- **Model choice.** Panel art uses tongyi-mai/z-image-turbo via the authenticated
+  gateway. Earlier builds used flux schnell, but flux ignored the art-style
+  suffixes and drifted photoreal, and the legacy anonymous endpoint ignored the
+  model parameter for keyed requests (identical output across models) and
+  rate-limited hard under load. One consistent model for every panel is what
+  makes the locked-character pitch work, so the fallback chain was removed in
+  favor of a single style-faithful model.
+- **Watermark handling.** Exports top-anchor the cover crop so any provider-side
+  bottom-edge watermark stays out of the downloaded PNG.
 
 ## AI disclosure
 
