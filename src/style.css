@@ -200,3 +200,13 @@ select {
 .progress { font-weight: 700; }
 
 footer { text-align: center; margin-top: 60px; color: #777; font-size: 14px; }
+
+.sitefoot {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.65;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
